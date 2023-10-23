@@ -1,0 +1,7 @@
+args(flag1,flag2);
+if(flag1){
+    out("E: var\n");
+}else{
+    out("E: !var\n");
+}
+out("end file\n");

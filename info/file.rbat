@@ -1,0 +1,4 @@
+args(var);
+out("file\n");
+if(var)out("var\n");
+else out("not var\n");
