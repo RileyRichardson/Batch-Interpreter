@@ -298,3 +298,30 @@ char* strLiteral(char* str){
     escapeChars(begin);
     return str;
 }
+int size_of_file(std::ifstream* file){
+    file->seekg(0,std::ios_base::end);
+    int size=file->tellg();
+    file->seekg(0,std::ios_base::beg);
+    return size;
+}
+int size_of_file(std::ofstream* file){
+    file->seekp(0,std::ios_base::end);
+    int size=file->tellp();
+    file->seekp(0,std::ios_base::beg);
+    return size;
+}
+int nextline(std::ifstream* file,int size=-1,char delim='\n');
+int nextline(std::ifstream* file,int size,char delim){
+    if(size<0){
+        size=size_of_file(file);
+    }
+    char c=0;
+    int len=0;
+    int opos=file->tellg();
+    while(c!=delim&&opos+len<size){
+        file->get(c);
+        len++;
+    }
+    file->seekg(opos);
+    return len+(opos+len==size);
+}

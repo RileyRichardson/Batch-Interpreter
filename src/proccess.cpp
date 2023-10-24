@@ -467,6 +467,78 @@ int proccess_line(char* tok,scope* _scope){
             return RETURN;
         }
         return ERROR;
+    }else if(startsWithTok(tok,"state","(")){
+        while(*tok!='(')tok++;
+        while(*tok!='"'&&*tok)tok++;
+        tok++;
+        char* rest_of_arg=strLiteral(tok)+1;
+        if(!rest_of_arg)return ERROR;
+        std::ifstream state_file;
+        char* file_name=tok;
+        state_file.open(tok,std::ios_base::in|std::ios_base::binary);
+        if(!state_file)return ERROR;
+        tok=rest_of_arg;
+        while(*tok!=','&&*tok)tok++;
+        if(!*tok)return ERROR;
+        tok++;
+        while(*tok!='"'&&*tok)tok++;
+        tok++;
+        rest_of_arg=strLiteral(tok)+1;
+        char* s_name=tok;
+        while(*rest_of_arg!=')'&&*rest_of_arg)rest_of_arg++;
+        if(!*rest_of_arg)return ERROR;
+        rest_of_arg++;
+        while(*rest_of_arg==' ')rest_of_arg++;
+        int size=size_of_file(&state_file);
+        int len=nextline(&state_file,size);
+        while(state_file){
+            char data[len];
+            int opos=state_file.tellg();
+            char* line=&data[0];
+            state_file.read(line,len);
+            line[len-1]='\0';
+            while(*line==' ')line++;
+            char* iter=line;
+            while(*iter!='='&&*iter)iter++;
+            if(!*iter)return ERROR;
+            char* val=iter+1;
+            while(iter[-1]==' ')iter--;
+            *iter='\0';
+            if(!strcmp(line,s_name)){
+                if(*rest_of_arg=='='){
+                    int rest=size-len-opos+1;
+                    std::cout<<rest<<'\n';
+                    char* end_file=new char[rest];
+                    state_file.read(end_file,rest);
+                    state_file.close();
+                    rest_of_arg++;
+                    while(*rest_of_arg==' ')rest_of_arg++;
+                    int res=proccess_line(rest_of_arg,_scope);
+                    if(res==ERROR||res==SUCCESS||res==RETURN)return ERROR;
+                    std::ofstream ofile;
+                    ofile.open(file_name,std::ios_base::binary|std::ios_base::out|std::ios_base::ate|std::ios_base::in);
+                    ofile.seekp(opos);
+                    ofile.write(s_name,strlen(s_name));
+                    ofile.put('=');
+                    if(res)ofile.write("true\n",5);
+                    else ofile.write("false\n",6);
+                    ofile.write(end_file,rest);
+                    delete[] end_file;
+                    while(ofile.tellp()<size)ofile.put(' ');
+                    return res;
+                }
+                state_file.close();
+                while(*val==' ')val++;
+                const char* t="true";
+                for(int i=0;i<4;i++){
+                    if(val[i]!=t[i]){return FALSE;}
+                }
+                return TRUE;
+            }
+            len=nextline(&state_file,size);
+        }
+        state_file.close();
+        return ERROR;
     }else if(_scope->varState(tok)!=-1){
         return _scope->varState(tok);
     }else if(_scope->macro(tok)){
