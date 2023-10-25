@@ -1,13 +1,34 @@
 #include "bat.h"
+#define PTR(a) (&a[0])
 
 int main(int argc,char** args){
     bool flags[MAX_FLAGS]={0};
+    flags[ECHO]=true;
     std::vector<int> bat_files;
     std::vector<char*> bv; 
     std::vector<char*> m;
     std::vector<bool> bb;
     long long rt=0;
     scope _scope(&bv,&bb,&m,flags,&rt);
+    if(argc==1){
+        while(true){
+            std::string input;
+            std::cout<<">>";
+            getline(std::cin,input);
+            unsigned int size=input.length();
+            if(size==0)continue;
+            char line[size+1];
+            strcpy(PTR(line),input.c_str());
+            int res=proccess_line(PTR(line),&_scope);
+            if(res==ERROR){
+                std::cout<<"an error has occurred\n";
+                if(!continue_qm(&_scope))return ERROR;
+                else continue;
+            }
+            else if(res==RETURN)return 0;
+        }
+        return 0;
+    }
     for(int i=1;i<argc;i++){
         if(!strcmp(args[i],"-lbl")){   
             flags[LBL]=true;
@@ -20,7 +41,7 @@ int main(int argc,char** args){
             flags[COE]=true;
             flags[AOE]=false;
         }else if(!strcmp(args[i],"-echo")){
-            flags[ECHO]=true;
+            flags[ECHO]=false;
         }else if(!strcmp(args[i],"-ebf")){
             flags[CBF]=true;
         }else if(!strcmp(args[i],"-fks")){

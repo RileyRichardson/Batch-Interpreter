@@ -19,45 +19,45 @@ struct scope{
         if(!strcmp("echo",flag)){
             if(op==-1)flags[ECHO]=!flags[ECHO];
             else if(op)flags[ECHO]=true;
-            else flags[ECHO];
-            return true;
+            else flags[ECHO]=false;
+            return flags[ECHO];
         }
         if(!strcmp("lbl",flag)){
             if(op==-1)flags[LBL]=!flags[LBL];
             else if(op)flags[LBL]=true;
-            else flags[LBL];
-            return true;
+            else flags[LBL]=false;
+            return flags[LBL];
         }
         if(!strcmp("fbf",flag)){
             if(op==-1)flags[FBF]=!flags[FBF];
             else if(op)flags[FBF]=true;
-            else flags[FBF];
-            return true;
+            else flags[FBF]=false;
+            return flags[FBF];
         }
         if(!strcmp("aoe",flag)){
             if(op==-1)flags[AOE]=!flags[AOE];
             else if(op)flags[AOE]=true;
-            else flags[AOE];
-            return true;
+            else flags[AOE]=false;
+            return flags[AOE];
         }
         if(!strcmp("coe",flag)){
             if(op==-1)flags[COE]=!flags[COE];
             else if(op)flags[COE]=true;
-            else flags[COE];
-            return true;
+            else flags[COE]=false;
+            return flags[COE];
         }
         if(!strcmp("afl",flag)){
             if(op==-1)flags[AFL]=!flags[AFL];
             else if(op)flags[AFL]=true;
-            else flags[AFL];
-            return true;
+            else flags[AFL]=false;
+            return flags[AFL];
         }
         for(unsigned long long i=0;i<var_c;i++){
             if(!strcmp(flag,vars->at(i))){
                 if(op==-1)var_states->at(i)=!var_states->at(i);
-                else if(op)var_states->at(i)=false;
+                else if(op)var_states->at(i)=true;
                 else var_states->at(i)=false;
-                return true;
+                return var_states->at(i);
             }
         }
         return false;

@@ -200,7 +200,7 @@ int proccess_line(char* tok,scope* _scope){
         unsigned long long len=strlen(tok);
         char cmd[len+10];
         memcpy(cmd,tok,len+1);
-        if(_scope->flags[ECHO]){
+        if(!_scope->flags[ECHO]){
             memcpy(cmd+len,">NUL 2>&1",10);
         }else{
             std::cout<<cmd<<'\n';
@@ -227,7 +227,7 @@ int proccess_line(char* tok,scope* _scope){
         std::cout<<tok;
         return SUCCESS;
     }else if(startsWithTok(tok,"echo ask","(")){
-        if(_scope->flags[ECHO])return FALSE;
+        if(!_scope->flags[ECHO])return FALSE;
         while(*tok!='(')tok++;
         tok++;
         while(*tok!='"'&&*tok)tok++;
@@ -261,7 +261,7 @@ int proccess_line(char* tok,scope* _scope){
         }
         return TRUE;
     }else if(startsWithTok(tok,"echo","(")){
-        if(_scope->flags[ECHO])return SUCCESS;
+        if(!_scope->flags[ECHO])return SUCCESS;
         while(*tok!='(')tok++;
         tok++;
         while(*tok!='"'&&*tok!='\0')tok++;
@@ -586,7 +586,7 @@ int proccess_line(char* tok,scope* _scope){
     unsigned long long len=strlen(tok);
     char cmd[len+10];
     memcpy(cmd,tok,len+1);
-    if(_scope->flags[ECHO]){
+    if(!_scope->flags[ECHO]){
         memcpy(cmd+len,">NUL 2>&1",10);
     }else std::cout<<cmd<<'\n';
     int r=std::system(cmd);
