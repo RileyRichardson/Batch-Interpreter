@@ -33,7 +33,7 @@ int run_macro(char* body,scope* _scope){
     char* copy=new char[strlen(body)+1];
     memcpy(copy,body,strlen(body)+1);
     scope s(_scope);
-    _scope->in_macro=true;
+    s.in_macro=true;
     int res=proccess_body(copy,&s);
     if(res==RETURN){
         if(_scope->depth<=*_scope->return_to)return SUCCESS;
@@ -507,7 +507,6 @@ int proccess_line(char* tok,scope* _scope){
             if(!strcmp(line,s_name)){
                 if(*rest_of_arg=='='){
                     int rest=size-len-opos+1;
-                    std::cout<<rest<<'\n';
                     char* end_file=new char[rest];
                     state_file.read(end_file,rest);
                     state_file.close();
