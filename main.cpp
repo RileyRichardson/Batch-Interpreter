@@ -1,5 +1,4 @@
 #include "bat.h"
-#define PTR(a) (&a[0])
 
 int main(int argc,char** args){
     bool flags[MAX_FLAGS]={0};

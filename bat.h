@@ -15,6 +15,8 @@
 #define TRUE 1
 #define SUCCESS 2
 
+#define PTR(a) (&a[0])
+
 #include <fstream>
 #include <iostream>
 #include <cstring>
