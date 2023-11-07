@@ -527,7 +527,7 @@ int proccess_line(char* tok,scope* _scope){
                     return res;
                 }
                 state_file.close();
-                while(*val==' ')val++;
+                while(isspace(*val))val++;
                 const char* t="true";
                 for(int i=0;i<4;i++){
                     if(val[i]!=t[i]){return FALSE;}

@@ -189,7 +189,7 @@ char* endLine(char* start){
     }
     return start;
 }
-char* readFile(char* path){
+char* readFile(const char* path){
     std::ifstream file;
     file.open(path,std::ios_base::in);
     if(file){
@@ -299,19 +299,20 @@ char* strLiteral(char* str){
     return str;
 }
 int size_of_file(std::ifstream* file){
+    int opos=file->tellg();
     file->seekg(0,std::ios_base::end);
     int size=file->tellg();
-    file->seekg(0,std::ios_base::beg);
+    file->seekg(opos);
     return size;
 }
 int size_of_file(std::ofstream* file){
+    int opos=file->tellg();
     file->seekp(0,std::ios_base::end);
     int size=file->tellp();
-    file->seekp(0,std::ios_base::beg);
+    file->seekp(opos);
     return size;
 }
-int nextline(std::ifstream* file,int size=-1,char delim='\n');
-int nextline(std::ifstream* file,int size,char delim){
+int nextline(std::ifstream* file,int size=-1,char deli='\n'){
     if(size<0){
         size=size_of_file(file);
     }

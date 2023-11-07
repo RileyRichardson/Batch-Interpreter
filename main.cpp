@@ -28,6 +28,7 @@ int main(int argc,char** args){
         }
         return 0;
     }
+    
     for(int i=1;i<argc;i++){
         if(!strcmp(args[i],"-lbl")){   
             flags[LBL]=true;
@@ -45,7 +46,12 @@ int main(int argc,char** args){
             flags[CBF]=true;
         }else if(!strcmp(args[i],"-fks")){
             flags[FKS]=true;
-        }else if(args[i][0]=='-'){
+        }/*else if(!strcmp(args[i],"-help")){
+            char* info=readFile("files/bat_interperet.txt");
+            std::cout<<info;
+            delete[] info;
+            return 0;
+        }*/else if(args[i][0]=='-'){
             _scope.addVar(args[i]+1,true);
         }else{
             bat_files.push_back(i);
